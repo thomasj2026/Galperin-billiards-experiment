@@ -8,4 +8,4 @@ interesting mathematical and physical phenomena.
 Demonstrates how two blocks undergoing perfectly
 elastic collisions can produce the digits of π.
 
-[View the simulation](experiments/)
+[View the simulation](experiment/)
