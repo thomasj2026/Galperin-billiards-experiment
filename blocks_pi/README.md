@@ -1,93 +1,84 @@
-# Digits of π from Two Colliding Blocks
+# The Digits of π Through Elastic Collisions
 
-This is a beginner-friendly Python animation of a surprising physics experiment: **counting collisions between two blocks and a wall produces the opening digits of π (pi).**
+## Overview
 
-## The setup
+This Python simulation demonstrates how the digits of π can emerge from perfectly elastic collisions between two blocks on a frictionless surface.
 
-- Two blocks slide in a straight line on a **frictionless horizontal surface**.
-- A rigid wall is on the **left**.
-- The **small blue block** (1 kg) begins at rest between the wall and a larger block.
-- The **large orange block** moves left toward the small block.
-- Every collision (block–block or small block–wall) is **perfectly elastic**: no kinetic energy is lost.
+The experiment involves a small block positioned between a wall and a larger moving block. By increasing the mass of the larger block, the total number of collisions produces the digits of π.
 
-The small block bounces back and forth until both blocks move away from the wall and cannot collide again. The program counts **every** impact, including impacts with the wall.
+## Requirements
 
-## Install and run
+- Python 3
+- NumPy
+- Matplotlib
 
-You need **Python 3.9 or newer** and the Python packages `matplotlib` and `numpy` is *not* required by the current script (only Matplotlib is used).
-
-1. Place `pi_collisions.py` in a folder on your computer.
-2. Open a terminal (Command Prompt or PowerShell on Windows) in that folder.
-3. Install Matplotlib:
-
-   ```bash
-   python -m pip install matplotlib
-   ```
-
-4. Start the animation:
-
-   ```bash
-   python pi_collisions.py --digits 3
-   ```
-
-A window opens showing the wall, moving blocks, and a collision counter. The terminal also prints the final collision count.
-
-### Choose the number of digits
+Install the required libraries:
 
 ```bash
-python pi_collisions.py --digits 1   # 3 collisions
-python pi_collisions.py --digits 2   # 31 collisions
-python pi_collisions.py --digits 3   # 314 collisions
-python pi_collisions.py --digits 4   # 3141 collisions
+pip install numpy matplotlib
 ```
 
-For runs with many collisions, speed up the animation by skipping to every Nth collision event:
+## Running the Simulation
+
+To simulate three digits of π (314 collisions):
 
 ```bash
-python pi_collisions.py --digits 4 --speed 20
+python experiments.py --digits 3
 ```
 
-`--speed 20` displays every 20th collision state, **but the simulation still computes and counts all collisions**. The animation therefore shows representative positions, not every impact individually. Supported digit choices are 1 through 4.
+To simulate four digits of π (3141 collisions) with accelerated animation:
 
-If `python` is not recognized on Windows, try `py` instead (for example, `py pi_collisions.py --digits 3`).
-
-## Why does π appear?
-
-Let the small block have mass **m = 1 kg** and the large block mass **M**. Choose their mass ratio as
-
-\[M/m = 100^{n-1}\]
-
-where **n** is the number of digits of π you want to demonstrate.
-
-| Desired digits (n) | Large mass (M) | Total collisions | Opening digits of π |
-| --- | ---: | ---: | --- |
-| 1 | 1 kg | 3 | 3 |
-| 2 | 100 kg | 31 | 3.1 |
-| 3 | 10,000 kg | 314 | 3.14 |
-| 4 | 1,000,000 kg | 3,141 | 3.141 |
-
-The decimal point is not part of the physical count. For example, 314 collisions represent the digits **3.14**.
-
-**Physics intuition:** Each perfectly elastic collision transfers momentum between the blocks while conserving the total kinetic energy. If you represent the velocities using appropriately mass-scaled coordinates, the collision sequence acts like repeated reflections through a fixed angle. The angle depends on the square root of the mass ratio. When **M/m = 100^(n−1)**, the number of reflections follows the first digits of π. This is often called *Galperin's billiards* or the *pi collisions experiment*.
-
-## What the code actually calculates
-
-Rather than guessing when a collision happened from small animation time steps, the script **calculates the time until the next possible impact**, advances the blocks to that moment, then updates their velocities using the one-dimensional elastic-collision equations:
-
-```text
-v1_new = ((m1 - m2) * v1 + 2*m2*v2) / (m1 + m2)
-v2_new = (2*m1*v1 + (m2 - m1)*v2) / (m1 + m2)
+```bash
+python experiments.py --digits 4 --speed 20
 ```
 
-At the wall, the small block reverses its velocity (`v1_new = -v1`). The simulation stops when there can be no more collisions.
+## The Physics Behind the Experiment
 
-The wall is drawn farther left for readability. The block positions are shifted by the **same amount in the plot only**, so this visual adjustment does not change the physics or collision counts.
+The simulation assumes:
 
-## Notes and troubleshooting
+- A frictionless horizontal surface.
+- Two blocks moving in one dimension.
+- A perfectly rigid wall.
+- Perfectly elastic collisions.
+- Conservation of momentum and kinetic energy.
 
-- **The blocks do not continuously glide at every moment:** the animation shows states at successive collision events. The time spacing between displayed frames is for viewing, not physical time.
-- **Matplotlib window does not appear?** Run the script from a local terminal in a graphical desktop environment, rather than a headless server.
-- **Animation too slow?** Increase `--speed` (such as `--speed 30`).
-- **`ModuleNotFoundError: matplotlib`?** Run `python -m pip install matplotlib` in the same Python environment used to run the script.
+The heavier block initially moves toward the smaller stationary block, which is positioned near the wall.
 
-This is an idealized 1D model: real blocks would lose energy from friction, deformation, and sound, so the exact π pattern requires the assumed perfectly elastic collisions and frictionless motion.
+The blocks collide repeatedly, and the smaller block also bounces off the wall.
+
+Eventually, both blocks move away from the wall without further collisions.
+
+## How π Appears
+
+The mass ratio between the two blocks is:
+
+$$
+\frac{M}{m}=100^{n-1}
+$$
+
+where:
+
+- \(M\) is the mass of the heavier block.
+- \(m\) is the mass of the lighter block.
+- \(n\) is the number of digits of π represented by the collision count.
+
+| Heavy Block Mass (Small Block = 1 kg) | Collisions |
+|---|---|
+| 1 kg | 3 |
+| 100 kg | 31 |
+| 10,000 kg | 314 |
+| 1,000,000 kg | 3141 |
+
+The number of collisions corresponds to the digits of π, with the decimal point omitted.
+
+## Scientific Background
+
+This experiment is known as **Galperin's billiards**, associated with mathematician Gregory Galperin.
+
+The appearance of π is related to a geometric interpretation of the collision dynamics in velocity space, where conservation of energy constrains the system's motion.
+
+This demonstrates a surprising relationship between classical mechanics, geometry, and mathematics.
+
+## Purpose
+
+This simulation provides a visual demonstration of conservation laws and the unexpected appearance of π in a simple mechanical system.
